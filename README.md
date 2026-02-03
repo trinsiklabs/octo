@@ -2,20 +2,45 @@
 
 **Reduce your OpenClaw API costs by 60-95%**
 
-OCTO (OpenClaw Token Optimizer) is an open-source toolkit that helps OpenClaw users dramatically reduce their Anthropic API costs through intelligent optimization, monitoring, and optional local inference.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![OpenClaw Compatible](https://img.shields.io/badge/OpenClaw-Compatible-blue.svg)](https://openclaw.ai)
 
-## Quick Start
+---
+
+## Install
 
 ```bash
-# One-line install
-curl -fsSL https://raw.githubusercontent.com/trinsiklabs/openclaw-token-optimizer/main/install.sh | bash
-
-# Run the setup wizard
-octo install
-
-# Check your optimization status
-octo status
+curl -fsSL https://raw.githubusercontent.com/trinsiklabs/octo/main/install.sh | bash
 ```
+
+That's it. Run `octo status` to see your optimization status.
+
+<details>
+<summary><strong>VPS / Server Install (non-interactive)</strong></summary>
+
+For automated VPS deployments where you can't interact with prompts:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/trinsiklabs/octo/main/install-vps.sh | bash
+```
+
+With custom OpenClaw path:
+```bash
+OPENCLAW_HOME=/path/to/openclaw curl -fsSL https://raw.githubusercontent.com/trinsiklabs/octo/main/install-vps.sh | bash
+```
+
+With Onelist for maximum savings (90-95%):
+```bash
+OCTO_INSTALL_ONELIST=true curl -fsSL https://raw.githubusercontent.com/trinsiklabs/octo/main/install-vps.sh | bash
+```
+
+</details>
+
+---
+
+## What is OCTO?
+
+OCTO (OpenClaw Token Optimizer) is an open-source toolkit that helps OpenClaw users dramatically reduce their Anthropic API costs through intelligent optimization, monitoring, and optional local inference.
 
 ## What Does OCTO Do?
 
@@ -126,7 +151,7 @@ Contributions welcome! Please read our [Contributing Guide](./CONTRIBUTING.md) b
 
 ## Support
 
-- GitHub Issues: [trinsiklabs/openclaw-token-optimizer](https://github.com/trinsiklabs/openclaw-token-optimizer/issues)
+- GitHub Issues: [trinsiklabs/octo](https://github.com/trinsiklabs/octo/issues)
 - Documentation: [docs.trinsiklabs.com/octo](https://docs.trinsiklabs.com/octo)
 
 ---

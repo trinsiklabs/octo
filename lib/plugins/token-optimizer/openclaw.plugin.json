@@ -4,7 +4,7 @@
   "description": "OCTO Token Optimizer - Reduce OpenClaw API costs by 60-95%",
   "author": "Trinsik Labs",
   "license": "MIT",
-  "homepage": "https://github.com/trinsiklabs/openclaw-token-optimizer",
+  "homepage": "https://github.com/trinsiklabs/octo",
 
   "main": "index.ts",
 
