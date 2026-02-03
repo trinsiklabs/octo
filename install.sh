@@ -75,7 +75,8 @@ if [ ! -d "$OPENCLAW_HOME" ]; then
     echo -e "${YELLOW}Warning:${NC} OpenClaw not found at $OPENCLAW_HOME"
     echo "OCTO will be installed but cannot function without OpenClaw."
     echo ""
-    if [ -t 0 ]; then
+    # Check all three fds are terminals (rules out curl|bash)
+    if [ -t 0 ] && [ -t 1 ] && [ -t 2 ]; then
         # Interactive mode - ask user
         read -p "Continue anyway? [y/N] " -n 1 -r
         echo
@@ -176,7 +177,8 @@ echo -e "  ${BOLD}Dashboard:${NC} http://localhost:6286 (after setup)"
 echo ""
 
 # Offer to run install wizard (only in interactive mode)
-if [ -t 0 ]; then
+# Check both stdin AND stdout are terminals (curl|bash has pipe stdin)
+if [ -t 0 ] && [ -t 1 ] && [ -t 2 ]; then
     echo -n "Run setup wizard now? [Y/n] "
     read -r REPLY
     REPLY="${REPLY:-Y}"
@@ -186,5 +188,6 @@ if [ -t 0 ]; then
         exec "$BIN_DIR/octo" install
     fi
 else
+    echo ""
     echo "Run 'octo install' to configure optimizations."
 fi
