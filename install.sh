@@ -3,14 +3,16 @@
 # OCTO - OpenClaw Token Optimizer
 # One-line installer
 #
-# Usage: curl -fsSL https://raw.githubusercontent.com/trinsiklabs/openclaw-token-optimizer/main/install.sh | bash
+# Usage: curl -fsSL https://raw.githubusercontent.com/trinsiklabs/octo/main/install.sh | bash
+#
+# For non-interactive VPS install, use install-vps.sh instead.
 #
 
 set -euo pipefail
 
 # Configuration
 OCTO_VERSION="${OCTO_VERSION:-latest}"
-OCTO_REPO="trinsiklabs/openclaw-token-optimizer"
+OCTO_REPO="${OCTO_REPO:-trinsiklabs/octo}"
 INSTALL_DIR="${OCTO_INSTALL_DIR:-$HOME/.local/share/octo}"
 BIN_DIR="${OCTO_BIN_DIR:-$HOME/.local/bin}"
 
