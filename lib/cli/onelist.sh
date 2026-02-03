@@ -455,25 +455,18 @@ offer_install() {
     fi
 
     echo ""
-    read -p "Install onelist-local? [y/N] " -r
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        echo ""
-        echo "Downloading and running onelist-local installer..."
-        echo ""
-
-        # Download and run installer
-        curl -fsSL "$ONELIST_LOCAL_INSTALLER" | bash
-
-        echo ""
-        echo "After installation completes, run 'octo onelist' again to connect."
-    else
-        echo ""
-        echo "You can install onelist-local manually:"
-        echo "  curl -fsSL $ONELIST_LOCAL_INSTALLER | bash"
-        echo ""
-        echo "Or connect to an existing Onelist instance:"
-        echo "  octo onelist --url=http://your-onelist-host:4000"
-    fi
+    echo -e "${YELLOW}SECURITY:${NC} OCTO no longer auto-installs Onelist via curl|bash."
+    echo ""
+    echo -e "${BOLD}To install onelist-local manually:${NC}"
+    echo "  1. Clone the repo:"
+    echo "     git clone https://github.com/trinsiklabs/onelist-local.git"
+    echo "  2. Follow the installation instructions in the README"
+    echo ""
+    echo -e "${BOLD}Or connect to an existing Onelist instance:${NC}"
+    echo "  octo onelist --url=http://your-onelist-host:4000"
+    echo ""
+    echo -e "${DIM}Why this changed: curl|bash patterns are security risks.${NC}"
+    echo -e "${DIM}See: https://sandstorm.io/news/2015-09-24-is-curl-bash-insecure-pgp-verified-install${NC}"
 }
 
 # Handle detected but not responding scenario

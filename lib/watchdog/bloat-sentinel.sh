@@ -21,7 +21,7 @@ OPENCLAW_HOME="${OPENCLAW_HOME:-$HOME/.openclaw}"
 # Configuration
 SESSIONS_DIR="$OPENCLAW_HOME/agents/main/sessions"
 INTERVENTION_LOG_DIR="$OPENCLAW_HOME/workspace/intervention_logs"
-SENTINEL_PID_FILE="/var/run/bloat-sentinel.pid"
+SENTINEL_PID_FILE="${OCTO_HOME}/sentinel.pid"
 SENTINEL_LOG="${OCTO_HOME}/logs/bloat-sentinel.log"
 
 # Layer thresholds - tuned to avoid false positives
@@ -169,10 +169,29 @@ clean_and_restart() {
     echo '{"type":"session_start","timestamp":"'"$(date -u +%Y-%m-%dT%H:%M:%SZ)"'"}' > "$session_file"
     log INFO "Session file reset"
 
-    # Restart gateway
+    # Restart gateway gracefully
     log INFO "Restarting gateway..."
-    pkill -f openclaw-gateway 2>/dev/null || true
-    sleep 2
+
+    # Try graceful shutdown first (SIGTERM)
+    local gateway_pid=$(pgrep -f openclaw-gateway 2>/dev/null | head -1)
+    if [ -n "$gateway_pid" ]; then
+        log INFO "Sending SIGTERM to gateway (PID $gateway_pid)"
+        kill -TERM "$gateway_pid" 2>/dev/null || true
+
+        # Wait up to 10 seconds for graceful shutdown
+        local waited=0
+        while [ $waited -lt 10 ] && kill -0 "$gateway_pid" 2>/dev/null; do
+            sleep 1
+            waited=$((waited + 1))
+        done
+
+        # Force kill if still running
+        if kill -0 "$gateway_pid" 2>/dev/null; then
+            log WARN "Gateway didn't stop gracefully, forcing..."
+            kill -9 "$gateway_pid" 2>/dev/null || true
+            sleep 1
+        fi
+    fi
 
     cd "$OPENCLAW_HOME" && nohup openclaw gateway start > /tmp/gateway.log 2>&1 &
 
@@ -443,7 +462,7 @@ start_daemon() {
         rm "$SENTINEL_PID_FILE"
     fi
 
-    mkdir -p "$(dirname "$SENTINEL_PID_FILE")" "$(dirname "$SENTINEL_LOG")" "$INTERVENTION_LOG_DIR" 2>/dev/null || true
+    mkdir -p "$OCTO_HOME" "$(dirname "$SENTINEL_LOG")" "$INTERVENTION_LOG_DIR" 2>/dev/null || true
 
     nohup "$0" start >> "$SENTINEL_LOG" 2>&1 &
     echo "$!" > "$SENTINEL_PID_FILE"
